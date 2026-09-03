@@ -4,9 +4,11 @@ const uploadButton = document.getElementById("uploadButton");
 const pasteButton = document.getElementById("pasteButton");
 const message = document.getElementById("message");
 
+const BACKEND_URL = "https://cheaper-backend.vercel.app";
+
 
 // SEARCH
-searchButton.addEventListener("click", () => {
+searchButton.addEventListener("click", async () => {
   const input = searchInput.value.trim();
 
   if (!input) {
@@ -14,11 +16,39 @@ searchButton.addEventListener("click", () => {
     return;
   }
 
-  // Save the search so the results page knows what was searched
-  localStorage.setItem("cheaperSearch", input);
+  searchButton.disabled = true;
+  searchButton.textContent = "Searching...";
+  message.textContent = "CHEAPER is searching...";
 
-  // Go to results page
-  window.location.href = "results.html";
+  try {
+    const response = await fetch(`${BACKEND_URL}/search`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        query: input
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error("Search failed");
+    }
+
+    const data = await response.json();
+
+    localStorage.setItem("cheaperSearch", data.query);
+
+    window.location.href = "results.html";
+
+  } catch (error) {
+    console.error(error);
+    message.textContent =
+      "Something went wrong. Please try again.";
+  }
+
+  searchButton.disabled = false;
+  searchButton.textContent = "Find it cheaper";
 });
 
 
@@ -43,31 +73,26 @@ pasteButton.addEventListener("click", async () => {
     }
   } catch (error) {
     searchInput.focus();
+    message.textContent =
+      "Paste your clothing link into the box above.";
   }
 });
 
 
 // PHOTO UPLOAD
 uploadButton.addEventListener("click", () => {
-
   const fileInput = document.createElement("input");
 
   fileInput.type = "file";
   fileInput.accept = "image/*";
 
   fileInput.addEventListener("change", () => {
-
     if (fileInput.files.length > 0) {
-
       const file = fileInput.files[0];
-
-      localStorage.setItem("cheaperPhotoName", file.name);
 
       message.textContent =
         `Photo selected: ${file.name}`;
-
     }
-
   });
 
   fileInput.click();
