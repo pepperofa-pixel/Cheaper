@@ -1,17 +1,24 @@
-const searchButton = document.querySelector(".search-box button");
-const searchInput = document.querySelector(".search-box input");
-const uploadButton = document.querySelector(".upload-button");
-const pasteButton = document.querySelector(".text-button");
+const searchButton = document.getElementById("searchButton");
+const searchInput = document.getElementById("searchInput");
+const uploadButton = document.getElementById("uploadButton");
+const pasteButton = document.getElementById("pasteButton");
+const message = document.getElementById("message");
 
 searchButton.addEventListener("click", () => {
-  const search = searchInput.value.trim();
+  const input = searchInput.value.trim();
 
-  if (!search) {
-    alert("Tell CHEAPER what you're looking for!");
+  if (!input) {
+    message.textContent = "Paste a clothing link or describe what you're looking for.";
     return;
   }
 
-  alert(`CHEAPER is ready to search for:\n\n${search}\n\nAI shopping search coming next!`);
+  if (input.startsWith("http://") || input.startsWith("https://")) {
+    message.textContent =
+      "Got it! CHEAPER received your clothing link. Real product searching is the next feature we'll connect.";
+  } else {
+    message.textContent =
+      `CHEAPER received: "${input}". AI clothing search is coming next!`;
+  }
 });
 
 searchInput.addEventListener("keydown", (event) => {
@@ -20,11 +27,24 @@ searchInput.addEventListener("keydown", (event) => {
   }
 });
 
-uploadButton.addEventListener("click", () => {
-  alert("Photo upload is coming next! 📸");
+pasteButton.addEventListener("click", async () => {
+  try {
+    const text = await navigator.clipboard.readText();
+
+    if (text) {
+      searchInput.value = text;
+      message.textContent = "Link pasted! Click “Find it cheaper.”";
+    } else {
+      searchInput.focus();
+      message.textContent = "Paste your clothing link into the box above.";
+    }
+  } catch (error) {
+    searchInput.focus();
+    message.textContent = "Paste your clothing link into the box above.";
+  }
 });
 
-pasteButton.addEventListener("click", () => {
-  searchInput.focus();
-  searchInput.placeholder = "Paste your clothing link here...";
+uploadButton.addEventListener("click", () => {
+  message.textContent =
+    "Photo search is coming next! 📸 We'll connect CHEAPER's AI to this button.";
 });
