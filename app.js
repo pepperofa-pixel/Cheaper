@@ -4,29 +4,33 @@ const uploadButton = document.getElementById("uploadButton");
 const pasteButton = document.getElementById("pasteButton");
 const message = document.getElementById("message");
 
+
+// SEARCH
 searchButton.addEventListener("click", () => {
   const input = searchInput.value.trim();
 
   if (!input) {
-    message.textContent = "Paste a clothing link or describe what you're looking for.";
+    message.textContent = "Enter a clothing item or paste a product link.";
     return;
   }
 
-  if (input.startsWith("http://") || input.startsWith("https://")) {
-    message.textContent =
-      "Got it! CHEAPER received your clothing link. Real product searching is the next feature we'll connect.";
-  } else {
-    message.textContent =
-      `CHEAPER received: "${input}". AI clothing search is coming next!`;
-  }
+  // Save the search so the results page knows what was searched
+  localStorage.setItem("cheaperSearch", input);
+
+  // Go to results page
+  window.location.href = "results.html";
 });
 
+
+// PRESS ENTER TO SEARCH
 searchInput.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
     searchButton.click();
   }
 });
 
+
+// PASTE LINK
 pasteButton.addEventListener("click", async () => {
   try {
     const text = await navigator.clipboard.readText();
@@ -36,15 +40,35 @@ pasteButton.addEventListener("click", async () => {
       message.textContent = "Link pasted! Click “Find it cheaper.”";
     } else {
       searchInput.focus();
-      message.textContent = "Paste your clothing link into the box above.";
     }
   } catch (error) {
     searchInput.focus();
-    message.textContent = "Paste your clothing link into the box above.";
   }
 });
 
+
+// PHOTO UPLOAD
 uploadButton.addEventListener("click", () => {
-  message.textContent =
-    "Photo search is coming next! 📸 We'll connect CHEAPER's AI to this button.";
+
+  const fileInput = document.createElement("input");
+
+  fileInput.type = "file";
+  fileInput.accept = "image/*";
+
+  fileInput.addEventListener("change", () => {
+
+    if (fileInput.files.length > 0) {
+
+      const file = fileInput.files[0];
+
+      localStorage.setItem("cheaperPhotoName", file.name);
+
+      message.textContent =
+        `Photo selected: ${file.name}`;
+
+    }
+
+  });
+
+  fileInput.click();
 });
