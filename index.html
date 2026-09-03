@@ -11,11 +11,12 @@
 
   <header>
     <div class="logo">CHEAPER<span>.</span></div>
- <nav>
-  <a href="index.html">Home</a>
-  <a href="saved.html">Saved</a>
-  <a href="about.html">About</a>
-</nav>
+
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="saved.html">Saved</a>
+      <a href="about.html">About</a>
+    </nav>
   </header>
 
   <main>
@@ -32,21 +33,28 @@
 
       <div class="search-box">
         <input
+          id="searchInput"
           type="text"
           placeholder="Paste a clothing link or describe what you're looking for..."
         >
-        <button>Search</button>
+
+        <button id="searchButton">Find it cheaper</button>
       </div>
 
       <div class="actions">
-        <button class="upload-button">
+
+        <button class="upload-button" id="uploadButton">
           📸 Upload a photo
         </button>
 
-        <button class="text-button">
+        <button class="text-button" id="pasteButton">
           🔗 Paste a link
         </button>
+
       </div>
+
+      <div id="message"></div>
+
     </section>
 
     <section class="how-it-works">
@@ -64,13 +72,13 @@
         <div class="step">
           <div class="step-number">02</div>
           <h3>We search</h3>
-          <p>Our AI looks for the item and comparable options.</p>
+          <p>CHEAPER analyzes what you're looking for and compares options.</p>
         </div>
 
         <div class="step">
           <div class="step-number">03</div>
           <h3>Pay less</h3>
-          <p>Compare your options and find the price that works for you.</p>
+          <p>Find a lower-priced option and save money.</p>
         </div>
 
       </div>
