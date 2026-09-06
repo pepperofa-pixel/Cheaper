@@ -4,7 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Saved — CHEAPER</title>
+
   <link rel="stylesheet" href="style.css">
 
   <style>
@@ -70,6 +72,11 @@
       cursor: pointer;
     }
 
+    .remove-button:hover {
+      background: #171717;
+      color: white;
+    }
+
     .empty-message {
       text-align: center;
       color: #777;
@@ -87,30 +94,41 @@
 <body>
 
   <header>
-    <div class="logo">CHEAPER<span>.</span></div>
+
+    <div class="logo">
+      CHEAPER<span>.</span>
+    </div>
 
     <nav>
       <a href="index.html">Home</a>
       <a href="saved.html">Saved</a>
       <a href="about.html">About</a>
     </nav>
+
   </header>
+
 
   <main>
 
     <section class="saved-page">
 
       <div class="saved-header">
-        <p class="eyebrow">YOUR ITEMS</p>
+
+        <p class="eyebrow">
+          YOUR ITEMS
+        </p>
 
         <h1>Saved.</h1>
 
         <p class="subtitle">
           Your favorite cheaper finds will appear here.
         </p>
+
       </div>
 
+
       <div id="savedGrid" class="saved-grid"></div>
+
 
       <div id="emptyMessage" class="empty-message">
         You haven't saved anything yet.
@@ -120,38 +138,60 @@
 
   </main>
 
+
   <footer>
-    <p>© 2026 CHEAPER. Find it for less.</p>
+
+    <p>
+      © 2026 CHEAPER. Find it for less.
+    </p>
+
   </footer>
+
 
   <script>
 
-    const savedGrid = document.getElementById("savedGrid");
-    const emptyMessage = document.getElementById("emptyMessage");
+    const savedGrid =
+      document.getElementById("savedGrid");
+
+    const emptyMessage =
+      document.getElementById("emptyMessage");
+
 
     let savedItems =
-      JSON.parse(localStorage.getItem("cheaperSavedItems")) || [];
+      JSON.parse(
+        localStorage.getItem("cheaperSavedItems")
+      ) || [];
+
 
     function displaySavedItems() {
 
       savedGrid.innerHTML = "";
 
+
       if (savedItems.length === 0) {
+
         emptyMessage.style.display = "block";
+
         return;
+
       }
+
 
       emptyMessage.style.display = "none";
 
+
       savedItems.forEach((item, index) => {
 
-        const card = document.createElement("div");
+        const card =
+          document.createElement("div");
 
         card.className = "saved-card";
 
+
         card.innerHTML = `
+
           <div class="saved-image">
-            👕
+            ${item.image || "👕"}
           </div>
 
           <div class="saved-info">
@@ -171,11 +211,14 @@
             </button>
 
           </div>
+
         `;
+
 
         savedGrid.appendChild(card);
 
       });
+
     }
 
 
@@ -183,12 +226,15 @@
 
       savedItems.splice(index, 1);
 
+
       localStorage.setItem(
         "cheaperSavedItems",
         JSON.stringify(savedItems)
       );
 
+
       displaySavedItems();
+
     }
 
 
