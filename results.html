@@ -127,6 +127,20 @@
       font-weight: 700;
     }
 
+    .loading {
+      text-align: center;
+      color: #777;
+      padding: 50px;
+      grid-column: 1 / -1;
+    }
+
+    .error-message {
+      text-align: center;
+      color: #777;
+      padding: 50px;
+      grid-column: 1 / -1;
+    }
+
     @media (max-width: 800px) {
       .results-grid {
         grid-template-columns: 1fr;
@@ -172,136 +186,11 @@
       </div>
 
 
-      <div class="results-grid">
+      <div id="resultsGrid" class="results-grid">
 
-
-        <div class="product-card">
-
-          <div class="product-image">
-            👕
-          </div>
-
-          <div class="product-info">
-
-            <div class="store">
-              Store option
-            </div>
-
-            <div class="product-name">
-              Oversized Casual Top
-            </div>
-
-            <div class="price-row">
-
-              <span class="price">
-                $24.99
-              </span>
-
-              <span class="old-price">
-                $39.99
-              </span>
-
-            </div>
-
-            <span class="deal">
-              SAVE $15
-            </span>
-
-            <button class="save-button"
-              onclick="saveItem('Oversized Casual Top', '$24.99', '👕')">
-              ♡ Save
-            </button>
-
-          </div>
-
+        <div class="loading">
+          Loading results...
         </div>
-
-
-
-        <div class="product-card">
-
-          <div class="product-image">
-            👚
-          </div>
-
-          <div class="product-info">
-
-            <div class="store">
-              Store option
-            </div>
-
-            <div class="product-name">
-              Relaxed Fit Clothing
-            </div>
-
-            <div class="price-row">
-
-              <span class="price">
-                $19.99
-              </span>
-
-              <span class="old-price">
-                $34.99
-              </span>
-
-            </div>
-
-            <span class="deal">
-              SAVE $15
-            </span>
-
-            <button class="save-button"
-              onclick="saveItem('Relaxed Fit Clothing', '$19.99', '👚')">
-              ♡ Save
-            </button>
-
-          </div>
-
-        </div>
-
-
-
-        <div class="product-card">
-
-          <div class="product-image">
-            🧥
-          </div>
-
-          <div class="product-info">
-
-            <div class="store">
-              Store option
-            </div>
-
-            <div class="product-name">
-              Classic Everyday Style
-            </div>
-
-            <div class="price-row">
-
-              <span class="price">
-                $17.99
-              </span>
-
-              <span class="old-price">
-                $29.99
-              </span>
-
-            </div>
-
-            <span class="deal">
-              SAVE $12
-            </span>
-
-            <button class="save-button"
-              onclick="saveItem('Classic Everyday Style', '$17.99', '🧥')">
-              ♡ Save
-            </button>
-
-          </div>
-
-        </div>
-
 
       </div>
 
@@ -326,25 +215,176 @@
 
   <script>
 
+    const BACKEND_URL =
+      "https://cheaper-backend.vercel.app";
+
     const search =
       localStorage.getItem("cheaperSearch");
 
-    document.getElementById("searchText").textContent =
+    const searchText =
+      document.getElementById("searchText");
+
+    const resultsGrid =
+      document.getElementById("resultsGrid");
+
+
+    searchText.textContent =
       search || "your clothing item";
+
+
+    async function loadResults() {
+
+      if (!search) {
+
+        resultsGrid.innerHTML = `
+          <div class="error-message">
+            No search was found.
+          </div>
+        `;
+
+        return;
+
+      }
+
+
+      try {
+
+        const response =
+          await fetch(`${BACKEND_URL}/search`, {
+
+            method: "POST",
+
+            headers: {
+              "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+              query: search
+            })
+
+          });
+
+
+        if (!response.ok) {
+          throw new Error("Search failed");
+        }
+
+
+        const data =
+          await response.json();
+
+
+        resultsGrid.innerHTML = "";
+
+
+        data.products.forEach(product => {
+
+          const card =
+            document.createElement("div");
+
+          card.className = "product-card";
+
+
+          const savings =
+            product.originalPrice - product.price;
+
+
+          card.innerHTML = `
+
+            <div class="product-image">
+              ${product.image || "👕"}
+            </div>
+
+            <div class="product-info">
+
+              <div class="store">
+                ${product.store}
+              </div>
+
+              <div class="product-name">
+                ${product.name}
+              </div>
+
+              <div class="price-row">
+
+                <span class="price">
+                  $${product.price.toFixed(2)}
+                </span>
+
+                <span class="old-price">
+                  $${product.originalPrice.toFixed(2)}
+                </span>
+
+              </div>
+
+              <span class="deal">
+                SAVE $${savings.toFixed(2)}
+              </span>
+
+              <button class="save-button">
+                ♡ Save
+              </button>
+
+            </div>
+
+          `;
+
+
+          const saveButton =
+            card.querySelector(".save-button");
+
+
+          saveButton.addEventListener("click", () => {
+
+            saveItem(
+              product.name,
+              `$${product.price.toFixed(2)}`,
+              product.image
+            );
+
+            saveButton.textContent = "✓ Saved";
+
+          });
+
+
+          resultsGrid.appendChild(card);
+
+        });
+
+      } catch (error) {
+
+        console.error(error);
+
+        resultsGrid.innerHTML = `
+          <div class="error-message">
+            Something went wrong while loading your results.
+          </div>
+        `;
+
+      }
+
+    }
 
 
     function saveItem(name, price, image) {
 
       let savedItems =
-        JSON.parse(localStorage.getItem("cheaperSavedItems")) || [];
+        JSON.parse(
+          localStorage.getItem("cheaperSavedItems")
+        ) || [];
+
 
       const alreadySaved =
-        savedItems.some(item => item.name === name);
+        savedItems.some(
+          item => item.name === name
+        );
+
 
       if (alreadySaved) {
         alert("This item is already saved!");
         return;
       }
+
 
       savedItems.push({
         name: name,
@@ -352,13 +392,16 @@
         image: image
       });
 
+
       localStorage.setItem(
         "cheaperSavedItems",
         JSON.stringify(savedItems)
       );
 
-      alert("Saved to your CHEAPER list! ❤️");
     }
+
+
+    loadResults();
 
   </script>
 
