@@ -10,7 +10,6 @@
   <link rel="stylesheet" href="style.css">
 
   <style>
-
     .results-page {
       max-width: 1100px;
       margin: auto;
@@ -43,11 +42,6 @@
       border: 1px solid #deddd8;
       border-radius: 16px;
       overflow: hidden;
-      transition: transform 0.2s;
-    }
-
-    .product-card:hover {
-      transform: translateY(-5px);
     }
 
     .product-image {
@@ -104,6 +98,23 @@
       font-weight: 700;
     }
 
+    .save-button {
+      width: 100%;
+      margin-top: 18px;
+      padding: 12px;
+      border: 1px solid #171717;
+      background: white;
+      color: #171717;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .save-button:hover {
+      background: #171717;
+      color: white;
+    }
+
     .back-button {
       display: block;
       width: fit-content;
@@ -121,11 +132,8 @@
         grid-template-columns: 1fr;
       }
     }
-
   </style>
-
 </head>
-
 
 <body>
 
@@ -199,6 +207,11 @@
               SAVE $15
             </span>
 
+            <button class="save-button"
+              onclick="saveItem('Oversized Casual Top', '$24.99', '👕')">
+              ♡ Save
+            </button>
+
           </div>
 
         </div>
@@ -236,6 +249,11 @@
             <span class="deal">
               SAVE $15
             </span>
+
+            <button class="save-button"
+              onclick="saveItem('Relaxed Fit Clothing', '$19.99', '👚')">
+              ♡ Save
+            </button>
 
           </div>
 
@@ -275,6 +293,11 @@
               SAVE $12
             </span>
 
+            <button class="save-button"
+              onclick="saveItem('Classic Everyday Style', '$17.99', '🧥')">
+              ♡ Save
+            </button>
+
           </div>
 
         </div>
@@ -308,6 +331,34 @@
 
     document.getElementById("searchText").textContent =
       search || "your clothing item";
+
+
+    function saveItem(name, price, image) {
+
+      let savedItems =
+        JSON.parse(localStorage.getItem("cheaperSavedItems")) || [];
+
+      const alreadySaved =
+        savedItems.some(item => item.name === name);
+
+      if (alreadySaved) {
+        alert("This item is already saved!");
+        return;
+      }
+
+      savedItems.push({
+        name: name,
+        price: price,
+        image: image
+      });
+
+      localStorage.setItem(
+        "cheaperSavedItems",
+        JSON.stringify(savedItems)
+      );
+
+      alert("Saved to your CHEAPER list! ❤️");
+    }
 
   </script>
 
