@@ -165,7 +165,6 @@
 
   </header>
 
-
   <main>
 
     <section class="results-page">
@@ -185,7 +184,6 @@
 
       </div>
 
-
       <div id="resultsGrid" class="results-grid">
 
         <div class="loading">
@@ -193,7 +191,6 @@
         </div>
 
       </div>
-
 
       <a href="index.html" class="back-button">
         ← Search for another item
@@ -203,7 +200,6 @@
 
   </main>
 
-
   <footer>
 
     <p>
@@ -211,7 +207,6 @@
     </p>
 
   </footer>
-
 
   <script>
 
@@ -227,10 +222,8 @@
     const resultsGrid =
       document.getElementById("resultsGrid");
 
-
     searchText.textContent =
       search || "your clothing item";
-
 
     async function loadResults() {
 
@@ -245,7 +238,6 @@
         return;
 
       }
-
 
       try {
 
@@ -264,18 +256,14 @@
 
           });
 
-
         if (!response.ok) {
           throw new Error("Search failed");
         }
 
-
         const data =
           await response.json();
 
-
         resultsGrid.innerHTML = "";
-
 
         data.products.forEach(product => {
 
@@ -284,10 +272,8 @@
 
           card.className = "product-card";
 
-
           const savings =
             product.originalPrice - product.price;
-
 
           card.innerHTML = `
 
@@ -329,10 +315,8 @@
 
           `;
 
-
           const saveButton =
             card.querySelector(".save-button");
-
 
           saveButton.addEventListener("click", () => {
 
@@ -345,7 +329,6 @@
             saveButton.textContent = "✓ Saved";
 
           });
-
 
           resultsGrid.appendChild(card);
 
@@ -365,7 +348,6 @@
 
     }
 
-
     function saveItem(name, price, image) {
 
       let savedItems =
@@ -373,25 +355,21 @@
           localStorage.getItem("cheaperSavedItems")
         ) || [];
 
-
       const alreadySaved =
         savedItems.some(
           item => item.name === name
         );
-
 
       if (alreadySaved) {
         alert("This item is already saved!");
         return;
       }
 
-
       savedItems.push({
         name: name,
         price: price,
         image: image
       });
-
 
       localStorage.setItem(
         "cheaperSavedItems",
@@ -400,7 +378,6 @@
 
     }
 
-
     loadResults();
 
   </script>
@@ -408,3 +385,5 @@
 </body>
 
 </html>
+
+
