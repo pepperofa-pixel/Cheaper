@@ -1,34 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Results — CHEAPER</title>
+  <title>CHEAPER — Results</title>
 
   <link rel="stylesheet" href="style.css">
 
   <style>
     .results-page {
-      max-width: 1100px;
-      margin: auto;
-      padding: 80px 25px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 70px 25px;
     }
 
-    .results-header {
+    .results-top {
       text-align: center;
-      margin-bottom: 50px;
+      margin-bottom: 45px;
     }
 
-    .results-header h1 {
-      font-size: clamp(45px, 7vw, 75px);
-      margin-bottom: 20px;
+    .results-top h1 {
+      font-size: clamp(40px, 6vw, 65px);
+      margin-bottom: 15px;
     }
 
-    .search-result {
-      color: #777;
-      font-size: 17px;
+    .results-top p {
+      color: #666;
+      font-size: 16px;
     }
 
     .results-grid {
@@ -42,108 +41,135 @@
       border: 1px solid #deddd8;
       border-radius: 16px;
       overflow: hidden;
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
     }
 
     .product-image {
-      height: 260px;
-      background: #e9e7e1;
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      background: #f1f0ec;
+      display: block;
+    }
+
+    .no-image {
+      height: 280px;
+      background: #f1f0ec;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 60px;
+      color: #999;
+      font-size: 14px;
     }
 
     .product-info {
       padding: 22px;
-    }
-
-    .store {
-      font-size: 12px;
-      color: #888;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 8px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
     }
 
     .product-name {
       font-size: 18px;
       font-weight: 700;
-      margin-bottom: 15px;
+      line-height: 1.35;
+      margin-bottom: 10px;
     }
 
-    .price-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    .store-name {
+      color: #777;
+      font-size: 14px;
+      margin-bottom: 18px;
     }
 
     .price {
-      font-size: 22px;
+      font-size: 26px;
       font-weight: 800;
+      margin-bottom: 8px;
     }
 
-    .old-price {
-      color: #999;
-      text-decoration: line-through;
+    .savings {
+      color: #287a45;
       font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 18px;
     }
 
-    .deal {
-      display: inline-block;
-      margin-top: 15px;
-      padding: 7px 10px;
-      background: #e7e5df;
-      border-radius: 7px;
-      font-size: 12px;
+    .buy-button {
+      display: block;
+      width: 100%;
+      padding: 13px;
+      background: #171717;
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 9px;
+      font-size: 14px;
       font-weight: 700;
+      margin-top: auto;
+    }
+
+    .buy-button:hover {
+      background: #333;
     }
 
     .save-button {
+      display: block;
       width: 100%;
-      margin-top: 18px;
-      padding: 12px;
-      border: 1px solid #171717;
-      background: white;
-      color: #171717;
-      border-radius: 8px;
-      font-weight: 700;
+      padding: 11px;
+      background: transparent;
+      color: #555;
+      border: 1px solid #d6d5d0;
+      border-radius: 9px;
+      font-size: 14px;
+      font-weight: 600;
       cursor: pointer;
+      margin-top: 9px;
     }
 
     .save-button:hover {
-      background: #171717;
-      color: white;
+      background: #f5f4f0;
     }
 
     .back-button {
-      display: block;
-      width: fit-content;
-      margin: 50px auto 0;
-      padding: 14px 22px;
-      background: #171717;
-      color: white;
+      display: inline-block;
+      margin-bottom: 30px;
+      color: #555;
       text-decoration: none;
-      border-radius: 9px;
-      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .back-button:hover {
+      color: #000;
     }
 
     .loading {
       text-align: center;
       color: #777;
-      padding: 50px;
-      grid-column: 1 / -1;
+      padding: 80px 20px;
     }
 
-    .error-message {
+    .error {
       text-align: center;
       color: #777;
-      padding: 50px;
-      grid-column: 1 / -1;
+      padding: 80px 20px;
     }
 
-    @media (max-width: 800px) {
+    @media (max-width: 900px) {
+      .results-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
       .results-grid {
         grid-template-columns: 1fr;
+      }
+
+      .results-page {
+        padding: 45px 18px;
       }
     }
   </style>
@@ -152,195 +178,285 @@
 <body>
 
   <header>
-
-    <div class="logo">
-      CHEAPER<span>.</span>
-    </div>
+    <div class="logo">CHEAPER<span>.</span></div>
 
     <nav>
       <a href="index.html">Home</a>
       <a href="saved.html">Saved</a>
       <a href="about.html">About</a>
     </nav>
-
   </header>
 
-  <main>
+  <main class="results-page">
 
-    <section class="results-page">
+    <a href="index.html" class="back-button">← Search again</a>
 
-      <div class="results-header">
+    <section class="results-top">
+      <p class="eyebrow">CHEAPER RESULTS</p>
 
-        <p class="eyebrow">
-          CHEAPER RESULTS
-        </p>
+      <h1>We found these.</h1>
 
-        <h1>We found some options.</h1>
+      <p id="searchText">Searching...</p>
+    </section>
 
-        <p class="search-result">
-          Searching for:
-          <strong id="searchText"></strong>
-        </p>
-
+    <section id="results" class="results-grid">
+      <div class="loading">
+        Searching stores...
       </div>
-
-      <div id="resultsGrid" class="results-grid">
-
-        <div class="loading">
-          Loading results...
-        </div>
-
-      </div>
-
-      <a href="index.html" class="back-button">
-        ← Search for another item
-      </a>
-
     </section>
 
   </main>
 
   <footer>
-
-    <p>
-      © 2026 CHEAPER. Find it for less.
-    </p>
-
+    <p>© 2026 CHEAPER. Find it for less.</p>
   </footer>
+
 
   <script>
 
-    const BACKEND_URL =
-      "https://cheaper-backend.vercel.app";
+    const BACKEND_URL = "https://cheaper-backend.vercel.app";
 
-    const search =
-      localStorage.getItem("cheaperSearch");
+    const resultsContainer = document.getElementById("results");
+    const searchText = document.getElementById("searchText");
 
-    const searchText =
-      document.getElementById("searchText");
+    const query = localStorage.getItem("cheaperSearch");
 
-    const resultsGrid =
-      document.getElementById("resultsGrid");
 
-    searchText.textContent =
-      search || "your clothing item";
+    if (!query) {
 
-    async function loadResults() {
+      searchText.textContent = "No search found.";
 
-      if (!search) {
+      resultsContainer.innerHTML = `
+        <div class="error">
+          <p>Go back and search for a clothing item.</p>
+        </div>
+      `;
 
-        resultsGrid.innerHTML = `
-          <div class="error-message">
-            No search was found.
-          </div>
-        `;
+    } else {
 
-        return;
+      searchText.textContent = `Results for "${query}"`;
 
-      }
+      searchProducts();
+
+    }
+
+
+    async function searchProducts() {
 
       try {
 
-        const response =
-          await fetch(`${BACKEND_URL}/search`, {
+        const response = await fetch(`${BACKEND_URL}/search`, {
 
-            method: "POST",
+          method: "POST",
 
-            headers: {
-              "Content-Type": "application/json"
-            },
+          headers: {
+            "Content-Type": "application/json"
+          },
 
-            body: JSON.stringify({
-              query: search
-            })
+          body: JSON.stringify({
+            query: query
+          })
 
-          });
+        });
+
 
         if (!response.ok) {
           throw new Error("Search failed");
         }
 
-        const data =
-          await response.json();
 
-        resultsGrid.innerHTML = "";
+        const data = await response.json();
 
-        data.products.forEach(product => {
 
-          const card =
-            document.createElement("div");
+        if (!data.products || data.products.length === 0) {
+
+          resultsContainer.innerHTML = `
+            <div class="error">
+              <p>No products were found.</p>
+            </div>
+          `;
+
+          return;
+
+        }
+
+
+        resultsContainer.innerHTML = "";
+
+
+        data.products.forEach((product, index) => {
+
+          const card = document.createElement("article");
 
           card.className = "product-card";
 
-          const savings =
-            product.originalPrice - product.price;
 
-          card.innerHTML = `
+          // IMAGE
 
-            <div class="product-image">
-              ${product.image || "👕"}
-            </div>
+          if (product.image) {
 
-            <div class="product-info">
+            const image = document.createElement("img");
 
-              <div class="store">
-                ${product.store}
-              </div>
+            image.className = "product-image";
 
-              <div class="product-name">
-                ${product.name}
-              </div>
+            image.src = product.image;
 
-              <div class="price-row">
+            image.alt = product.name || "Clothing item";
 
-                <span class="price">
-                  $${product.price.toFixed(2)}
-                </span>
+            image.onerror = function() {
+              this.replaceWith(createNoImage());
+            };
 
-                <span class="old-price">
-                  $${product.originalPrice.toFixed(2)}
-                </span>
+            card.appendChild(image);
 
-              </div>
+          } else {
 
-              <span class="deal">
-                SAVE $${savings.toFixed(2)}
-              </span>
+            card.appendChild(createNoImage());
 
-              <button class="save-button">
-                ♡ Save
-              </button>
+          }
 
-            </div>
 
-          `;
+          // INFO
 
-          const saveButton =
-            card.querySelector(".save-button");
+          const info = document.createElement("div");
+
+          info.className = "product-info";
+
+
+          const name = document.createElement("div");
+
+          name.className = "product-name";
+
+          name.textContent = product.name || "Product";
+
+
+          const store = document.createElement("div");
+
+          store.className = "store-name";
+
+          store.textContent = product.store || "Online Store";
+
+
+          const price = document.createElement("div");
+
+          price.className = "price";
+
+          const productPrice = Number(product.price);
+
+          price.textContent =
+            Number.isFinite(productPrice) && productPrice > 0
+              ? `$${productPrice.toFixed(2)}`
+              : "Price unavailable";
+
+
+          info.appendChild(name);
+
+          info.appendChild(store);
+
+          info.appendChild(price);
+
+
+          // SAVINGS
+
+          const originalPrice = Number(product.originalPrice);
+
+          if (
+            Number.isFinite(originalPrice) &&
+            Number.isFinite(productPrice) &&
+            originalPrice > productPrice
+          ) {
+
+            const savings = document.createElement("div");
+
+            savings.className = "savings";
+
+            savings.textContent =
+              `Save $${(originalPrice - productPrice).toFixed(2)}`;
+
+            info.appendChild(savings);
+
+          }
+
+
+          // BUY BUTTON
+
+          if (product.url) {
+
+            const buyButton = document.createElement("a");
+
+            buyButton.className = "buy-button";
+
+            buyButton.href = product.url;
+
+            buyButton.target = "_blank";
+
+            buyButton.rel = "noopener noreferrer";
+
+            buyButton.textContent = "View / Buy";
+
+
+            info.appendChild(buyButton);
+
+          }
+
+
+          // SAVE BUTTON
+
+          const saveButton = document.createElement("button");
+
+          saveButton.className = "save-button";
+
+          saveButton.textContent = "♡ Save";
+
 
           saveButton.addEventListener("click", () => {
 
-            saveItem(
-              product.name,
-              `$${product.price.toFixed(2)}`,
-              product.image
+            const savedItems =
+              JSON.parse(localStorage.getItem("savedProducts")) || [];
+
+
+            const alreadySaved = savedItems.some(item =>
+              item.url === product.url
             );
 
-            saveButton.textContent = "✓ Saved";
+
+            if (!alreadySaved) {
+
+              savedItems.push(product);
+
+              localStorage.setItem(
+                "savedProducts",
+                JSON.stringify(savedItems)
+              );
+
+              saveButton.textContent = "✓ Saved";
+
+            } else {
+
+              saveButton.textContent = "✓ Already saved";
+
+            }
 
           });
 
-          resultsGrid.appendChild(card);
+
+          info.appendChild(saveButton);
+
+          card.appendChild(info);
+
+          resultsContainer.appendChild(card);
 
         });
+
 
       } catch (error) {
 
         console.error(error);
 
-        resultsGrid.innerHTML = `
-          <div class="error-message">
-            Something went wrong while loading your results.
+        resultsContainer.innerHTML = `
+          <div class="error">
+            <p>Something went wrong while finding products.</p>
+            <p>Please try searching again.</p>
           </div>
         `;
 
@@ -348,42 +464,20 @@
 
     }
 
-    function saveItem(name, price, image) {
 
-      let savedItems =
-        JSON.parse(
-          localStorage.getItem("cheaperSavedItems")
-        ) || [];
+    function createNoImage() {
 
-      const alreadySaved =
-        savedItems.some(
-          item => item.name === name
-        );
+      const div = document.createElement("div");
 
-      if (alreadySaved) {
-        alert("This item is already saved!");
-        return;
-      }
+      div.className = "no-image";
 
-      savedItems.push({
-        name: name,
-        price: price,
-        image: image
-      });
+      div.textContent = "Image unavailable";
 
-      localStorage.setItem(
-        "cheaperSavedItems",
-        JSON.stringify(savedItems)
-      );
+      return div;
 
     }
-
-    loadResults();
 
   </script>
 
 </body>
-
 </html>
-
-
